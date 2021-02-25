@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "gme_shorts"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.scripts]
+update = "gme_shorts.app:get_shorts"
+web = "gme_shorts.app:run_app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.25.1"
+black = "^20.8b1"
+Flask = "^1.1.2"
+Flask-APScheduler = "^1.11.0"
+flask-restx = "^0.2.0"
+gunicorn = {extras = ["gevent"], version = "^20.0.4"}
+gevent = "^21.1.2"
+Flask-SQLAlchemy = "^2.4.4"
+redislite = "^6.0.674960"
+Flask-RQ2 = "^18.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

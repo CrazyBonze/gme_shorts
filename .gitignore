@@ -1,0 +1,8 @@
+__pycache__/
+redis.conf/
+redis-data/
+gme_shorts/data/
+log
+
+*.py[cod]
+*$py.class
