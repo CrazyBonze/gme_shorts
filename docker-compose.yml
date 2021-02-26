@@ -1,22 +1,36 @@
-version: "3.2"
+version: "3.7"
 services:
+        nginx:
+                restart: always
+                build: ./nginx
+                ports:
+                        - 1337:80
+                depends_on:
+                        - web
         web:
+                restart: always
                 build: .
                 container_name: flask_web
                 command: poetry run gunicorn wsgi:app
+                volumes:
+                        - shared_data:/gme_shorts/gme_shorts/data
                 ports:
-                        - "5000:5000"
+                        - 5000
                 depends_on:
                         - redis
 
         worker:
+                restart: always
                 build: .
                 container_name: rq_worker
                 command: poetry run flask rq worker
+                volumes:
+                        - shared_data:/gme_shorts/gme_shorts/data
                 depends_on:
                         - redis
 
         scheduler:
+                restart: always
                 build: .
                 container_name: rq_scheduler
                 command: poetry run flask rq scheduler
@@ -24,12 +38,15 @@ services:
                         - redis
 
         redis:
+                restart: always
                 image: "redis:alpine"
                 command: redis-server --requirepass password
                 ports:
-                        - "6379:6379"
+                        - 6379
                 volumes:
                         - $PWD/redis-data:/var/lib/redis
                         - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
                 environment:
                         - REDIS_REPLICATION_MODE=master
+volumes:
+        shared_data:

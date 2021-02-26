@@ -10,6 +10,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import logging
 from flask_rq2 import RQ
+import os
 
 
 class Config(object):
@@ -34,6 +35,9 @@ data_namespace = api.namespace("data", description="GME short data")
 
 # Set up the workers
 rq = RQ(app)
+
+if not os.path.exists("gme_shorts/data"):
+    os.makedirs("gme_shorts/data")
 
 
 @app.route("/")
@@ -142,7 +146,7 @@ def get_shorts():
                 logging.error(f"Skipping data for {etf} {response.json()['status']}")
 
 
-get_shorts.cron("*/5 * * * *", "get_shorts")
+get_shorts.cron("0 * * * *", "get_shorts")
 
 
 def run_app():
